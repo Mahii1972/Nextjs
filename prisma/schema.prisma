@@ -1,0 +1,24 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Inventory {
+  id          Int     @id @default(autoincrement())
+  GroupName   String? @map("`Group Name`")
+  CompanyName String? @map("`Company Name`")
+  ProjectName String? @map("`Project Name`")
+  CapacityMW  Int?    @map("`Capacity (MW)`")
+  DeviceID    String? @map("`Device ID`")
+  CoD         String?
+  DeviceType  String?
+  Registered  String?
+  @@map("Inventory")
+}
+
+
+
