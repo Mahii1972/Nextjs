@@ -20,5 +20,16 @@ model Inventory {
   @@map("Inventory")
 }
 
+model Mon2022 {
+  id                  Int     @id @default(autoincrement())
+  DeviceID            String? @map("Device ID")
+  StartDate           String? @map("Start Date")
+  EndDate             String? @map("End Date")
+  CreditsGeneratedMWh Int?    @map("Credits Generated (MWh)")
+  CreditsSoldMWh      Int?    @map("Credits Sold (MWh)")
+  BalanceCreditsMWh   Int?    @map("Balance Credits (MWh)")
+  Buyer               String?
+}
+
 
 
