@@ -31,5 +31,22 @@ model Mon2022 {
   Buyer               String?
 }
 
+model Gen2022 {
+  id           Int     @id @default(autoincrement())
+  DeviceID     String  @map("Device ID")
+  January      Int     @map("January (kWh)")
+  February     Int     @map("February (kWh)")
+  March        Int     @map("March (kWh)")
+  April        Int     @map("April (kWh)")
+  May          Int     @map("May (kWh)")
+  June         Int     @map("June (kWh)")
+  July         Int     @map("July (kWh)")
+  August       Int     @map("August (kWh)")
+  September    Int     @map("September (kWh)")
+  October      Int     @map("October (kWh)")
+  November     Int     @map("November (kWh)")
+  December     Int     @map("December (kWh)")
+}
+
 
 

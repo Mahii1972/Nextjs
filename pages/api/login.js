@@ -5,8 +5,8 @@ import { setCookie } from '../../cookieUtils';
 
 const dbConfig = { 
   host: 'aws.connect.psdb.cloud', 
-  user: 'ngz7zf1fbddebt739x83', 
-  password: 'pscale_pw_xRQ4QhW5uR27qtEQZ0fg3NOZIEar913f0F33GR14j7u', 
+  user: 'xzvz7896h6dktbqxtmna', 
+  password: 'pscale_pw_LMGqS7aBgIpyvVj2RYJkJDyOlyAP8AMcE9hYj1612Yk', 
   database: 'temporary', 
   ssl: { 
     ca: process.env.PLANETSCALE_CA_CERT, 

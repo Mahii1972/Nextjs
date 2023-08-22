@@ -18,9 +18,9 @@ export default function RadialBarChartPage() {
   }
 
   const chartData = [
-    { name: 'Balance Credits', value: data.BalanceCreditsMWh || 0, fill: '#ffc658' },
-    { name: 'Credits Sold', value: data.CreditsSoldMWh || 0, fill: '#82ca9d' },
-    { name: 'Credits Generated', value: data.CreditsGeneratedMWh || 0, fill: '#8884d8' },
+    { name: 'Balance Credits', value: data.BalanceCreditsMWhPercentage || 0, fill: '#ffc658' },
+    { name: 'Credits Sold', value: data.CreditsSoldMWhPercentage || 0, fill: '#82ca9d' },
+    { name: 'Credits Generated', value: data.CreditsGeneratedMWhPercentage || 0, fill: '#8884d8' },
     
     
   ];
