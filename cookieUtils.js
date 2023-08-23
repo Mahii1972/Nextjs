@@ -7,14 +7,19 @@ export function setCookie(res, name, value, options = {}) {
 
 
 export function getCookie(req, name) {
+  if (!req.headers.cookie) {
+    return undefined;
+  }
+
   const cookies = req.headers.cookie.split(';').reduce((cookies, cookie) => {
     const [name, value] = cookie.split('=').map(c => c.trim());
     cookies[name] = value;
     return cookies;
   }, {});
-  return cookies[name];
 
+  return cookies[name];
 }
+
 
 
 
