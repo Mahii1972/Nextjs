@@ -1,13 +1,8 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+// pages/api/data.js
+import getPSConnection from '../../lib/planetscaledb';
 
 export default async function handler(req, res) {
-  try {
-    const data = await prisma.$queryRawUnsafe('SELECT * FROM Inventory;');
-    res.status(200).json(data);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error fetching data', details: error.message });
-  }
+  const connection = await getPSConnection();
+  const [rows] = await connection.query('SELECT * FROM Inventory');
+  res.status(200).json(rows);
 }

@@ -10,6 +10,9 @@ const Sidebar = ({ children }) => {
           <Link href="/chooseDatabase">Uploads</Link>
           <Link href="/new">See Graph</Link>
           <Link href="/pst">Table</Link>
+          <Link href="/form">Data registeration Form</Link>
+          <Link href="/logout">Log out 
+       </Link>
         </div>
       </div>
       <main className="main-content">{children}</main>

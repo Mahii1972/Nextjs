@@ -49,4 +49,14 @@ model Gen2022 {
 }
 
 
-
+model Inv {
+  id          Int      @id @default(autoincrement())
+  GroupName   String?
+  CompanyName String?
+  ProjectName String?
+  CapacityMW  Int?
+  DeviceID    String?
+  DeviceType  String?
+  Registered  String?
+  CoD         DateTime?
+}
