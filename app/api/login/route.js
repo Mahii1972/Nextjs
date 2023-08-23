@@ -5,8 +5,8 @@ import { setCookie } from '../../cookieUtils';
 
 const dbConfig = { 
   host: 'aws.connect.psdb.cloud', 
-  user: 'ngz7zf1fbddebt739x83', 
-  password: 'pscale_pw_xRQ4QhW5uR27qtEQZ0fg3NOZIEar913f0F33GR14j7u', 
+  user: 'vkxaa0r5oj2ywji3vgg7', 
+  password: 'pscale_pw_fFiUnnk50Lxefp9fqc5f9b94SYq2Loi0nxj7nj1XL35', 
   database: 'temporary', 
   ssl: { 
     ca: process.env.PLANETSCALE_CA_CERT, 
@@ -27,10 +27,10 @@ export default async function handler(req, res) {
 
     if (rows.length > 0 && bcrypt.compareSync(password, rows[0].password)) {
       const token = jwt.sign({ username, role: rows[0].role }, JWT_SECRET, {
-        expiresIn: '20s',
+        expiresIn: '120s',
       });
       
-      const expiresAt = Math.floor(Date.now() / 1000) + 20; // Current time + 20 seconds
+      const expiresAt = Math.floor(Date.now() / 1000) + 120; // Current time + 20 seconds
       setCookie(res, 'auth', token, { httpOnly: true, path: '/' });
       res.status(200).json({ token, expiresAt });
     } else {
