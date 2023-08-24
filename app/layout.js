@@ -1,11 +1,15 @@
-import Sidebar from '../components/sidebar'
+import React from 'react';
+import Sidebar from '../components/sidebar';
 
-function MyApp({ Component, pageProps }) {
+const RootLayout = ({ children }) => {
   return (
-    <Sidebar>
-      <Component {...pageProps} />
-    </Sidebar>
-  )
-}
+    <html lang="en">
+      <body>
+        <Sidebar />
+        {children}
+      </body>
+    </html>
+  );
+};
 
-export default MyApp
+export default RootLayout;

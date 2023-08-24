@@ -1,8 +1,8 @@
 // pages/index.js
-import InvForm from '../components/InvForm';
+import InvForm from '../../components/InvForm';
 import jwt from 'jsonwebtoken';
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
-import { getCookie } from '../cookieUtils';
+import { getCookie } from '../../cookieUtils';
 
 
 

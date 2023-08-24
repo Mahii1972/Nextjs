@@ -1,7 +1,8 @@
+"use client"
 import React from 'react';
-import RadialBarChartPage from '../components/charts';
-import LineChartPage from '../components/simple';
-import { getCookie } from '../cookieUtils';
+import RadialBarChartPage from '../../components/charts';
+import LineChartPage from '../../components/simple';
+import { getCookie } from '/cookieUtils';
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';

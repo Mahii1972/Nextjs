@@ -20,9 +20,16 @@ export default async function handler(req, res) {
     SUM(COALESCE(\`December (kWh)\`, 0)) as December
   FROM Gen2022
     `);
-    res.status(200).json(data);
+    console.log('Fetched data in /api/test:', data); // Log the fetched data
+    if (res) {
+      res.status(200).json(data);
+    } else {
+      console.error('Response object is undefined');
+    }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error fetching data', details: error.message });
+    if (res) {
+      res.status(500).json({ error: 'Error fetching data', details: error.message });
+    }
   }
 }

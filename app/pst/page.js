@@ -1,6 +1,7 @@
+'use client'
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { getCookie } from '../cookieUtils';
+import { getCookie } from '../../cookieUtils';
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
@@ -40,7 +41,9 @@ export async function getServerSideProps(context) {
 export default function Home({ data }) {
   const getDistinctGroupNames = () => {
     const groupNames = new Set();
-    data.forEach((item) => groupNames.add(item['Group Name']));
+    if (data) {
+      data.forEach((item) => groupNames.add(item['Group Name']));
+    }
     return Array.from(groupNames);
   };
 
@@ -52,11 +55,13 @@ export default function Home({ data }) {
 
   const getCapacitySum = (groupName) => {
     let sum = 0;
-    data.forEach((item) => {
-      if (item['Group Name'] === groupName) {
-        sum += item['Capacity (MW)'];
-      }
-    });
+    if (data) {
+      data.forEach((item) => {
+        if (item['Group Name'] === groupName) {
+          sum += item['Capacity (MW)'];
+        }
+      });
+    }
     return sum;
   };
 

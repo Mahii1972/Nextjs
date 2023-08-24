@@ -1,4 +1,5 @@
 // pages/login.js
+'use client'
 import { useState, useEffect } from 'react';
 import Router from 'next/router';
 import Cookies from 'js-cookie';

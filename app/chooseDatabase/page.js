@@ -1,6 +1,7 @@
+'use client'
 import { useEffect } from 'react';
 import Router from 'next/router';
-import { getCookie } from '../cookieUtils';
+import { getCookie } from '../../cookieUtils';
 import jwt from 'jsonwebtoken';
 import Link from 'next/link';
 
