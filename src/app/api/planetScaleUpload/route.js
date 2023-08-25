@@ -1,6 +1,9 @@
 import multer from 'multer';
 import XLSX from 'xlsx';
 import getPSConnection from '../../../lib/planetscaledb';
+import { NextResponse } from 'next/server';
+
+
 
 export const config = {
   api: {
@@ -10,9 +13,10 @@ export const config = {
 
 const upload = multer({ dest: 'uploads/' });
 
-export async function POST(req, res) {
+export async function POST(request) {
     await new Promise((resolve, reject) => {
-      upload.single('file')(req, res, (error) => {
+      let res = NextResponse.next()
+      upload.single('file')(request, res, (error) => {
         if (error) {
           reject(error);
         } else {
@@ -20,10 +24,10 @@ export async function POST(req, res) {
         }
       });
   });
-  console.log('req.file:', req.file);
+  console.log('request.file:', request.file);
 
 
-  const workbook = XLSX.readFile(req.file.path);
+  const workbook = XLSX.readFile(request.file.path);
   const sheetNameList = workbook.SheetNames;
   const data = XLSX.utils.sheet_to_json(workbook.Sheets[sheetNameList[0]]);
 
