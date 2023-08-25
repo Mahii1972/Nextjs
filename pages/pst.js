@@ -14,7 +14,6 @@ export async function getServerSideProps(context) {
     decoded = jwt.verify(token, JWT_SECRET);
     role = decoded.role;
   } catch (err) {
-    // If the token is not valid or not present, redirect to the login page
     return {
       redirect: {
         destination: '/login',
@@ -23,11 +22,9 @@ export async function getServerSideProps(context) {
     };
   }
 
-  // Fetch data after authentication
   const res = await fetch('http://localhost:3000/api/data');
   const data = await res.json();
 
-  // Return both authentication data and fetched data
   return {
     props: {
       token,
@@ -45,6 +42,7 @@ export default function Home({ data }) {
   };
 
   const [distinctGroupNames, setDistinctGroupNames] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     setDistinctGroupNames(getDistinctGroupNames());
@@ -63,6 +61,12 @@ export default function Home({ data }) {
   return (
     <div>
       <h1>Group Names</h1>
+      <input
+        type="text"
+        placeholder="Search group names"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
       <table>
         <thead>
           <tr>
@@ -71,16 +75,20 @@ export default function Home({ data }) {
           </tr>
         </thead>
         <tbody>
-          {distinctGroupNames.map((groupName) => (
-            <tr key={groupName}>
-              <td>
-                <Link href={`/groupDetails?groupName=${encodeURIComponent(groupName)}`}>
-                  {groupName}
-                </Link>
-              </td>
-              <td>{getCapacitySum(groupName)}</td>
-            </tr>
-          ))}
+          {distinctGroupNames
+            .filter((groupName) =>
+              groupName.toLowerCase().includes(searchQuery.toLowerCase())
+            )
+            .map((groupName) => (
+              <tr key={groupName}>
+                <td>
+                  <Link href={`/groupDetails?groupName=${encodeURIComponent(groupName)}`}>
+                    {groupName}
+                  </Link>
+                </td>
+                <td>{getCapacitySum(groupName)}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
       <style jsx>{`

@@ -2,17 +2,23 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import mysql from 'mysql2/promise';
 import { setCookie } from '../../cookieUtils';
+import dotenv from 'dotenv';
 
-const dbConfig = { 
-  host: 'aws.connect.psdb.cloud', 
-  user: 'g63udevf9fc0uk1htl0l', 
-  password: 'pscale_pw_2EckBRu2eCcwW22oEFvFkX1XAb6UVN2rQCHPFxIB7nS', 
-  database: 'temporary', 
-  ssl: { 
-    ca: process.env.PLANETSCALE_CA_CERT, 
-  }, 
-}; 
 
+
+dotenv.config();
+
+const dbUrl = new URL(process.env.DATABASE_URL);
+
+const dbConfig = {
+  host: dbUrl.hostname,
+  user: dbUrl.username,
+  password: dbUrl.password,
+  database: dbUrl.pathname.substring(1),
+  ssl: {
+    ca: process.env.PLANETSCALE_CA_CERT,
+  },
+};
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
 export default async function handler(req, res) {

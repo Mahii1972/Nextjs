@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { getCookie } from '../cookieUtils';
 import jwt from 'jsonwebtoken';
 
@@ -13,7 +13,6 @@ export async function getServerSideProps(context) {
     decoded = jwt.verify(token, JWT_SECRET);
     role = decoded.role;
   } catch (err) {
-    // If the token is not valid or not present, redirect to the login page
     return {
       redirect: {
         destination: '/login',
@@ -29,9 +28,17 @@ export async function getServerSideProps(context) {
 }
 
 export default function GroupDetails({ groupName, data }) {
+  const [searchQuery, setSearchQuery] = useState('');
+
   return (
     <div>
       <h2>Details for Group: {groupName}</h2>
+      <input
+        type="text"
+        placeholder="Search company names"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
       <table>
         <thead>
           <tr>
@@ -45,22 +52,22 @@ export default function GroupDetails({ groupName, data }) {
           </tr>
         </thead>
         <tbody>
-          {data.map((item) => {
-            if (item['Group Name'] === groupName) {
-              return (
-                <tr key={item.id}>
-                  <td>{item['Company Name']}</td>
-                  <td>{item['Project Name']}</td>
-                  <td>{item['Capacity (MW)']}</td>
-                  <td>{item['Device ID']}</td>
-                  <td>{item['Device Type']}</td>
-                  <td>{item['Registered']}</td>
-                  <td>{new Date(item['CoD']).toDateString()}</td>
-                </tr>
-              );
-            }
-            return null;
-          })}
+          {data
+            .filter((item) => item['Group Name'] === groupName)
+            .filter((item) =>
+              item['Company Name'].toLowerCase().includes(searchQuery.toLowerCase())
+            )
+            .map((item) => (
+              <tr key={item.id}>
+                <td>{item['Company Name']}</td>
+                <td>{item['Project Name']}</td>
+                <td>{item['Capacity (MW)']}</td>
+                <td>{item['Device ID']}</td>
+                <td>{item['Device Type']}</td>
+                <td>{item['Registered']}</td>
+                <td>{new Date(item['CoD']).toDateString()}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
       <style jsx>{`
