@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
+import React, { useState } from 'react';
 import { getCookie } from '../cookieUtils';
 import jwt from 'jsonwebtoken';
 
@@ -22,71 +21,51 @@ export async function getServerSideProps(context) {
     };
   }
 
+  const { groupName } = context.query;
   const res = await fetch('http://localhost:3000/api/data');
   const data = await res.json();
-
-  return {
-    props: {
-      token,
-      role,
-      data,
-    },
-  };
+  return { props: { groupName, data } };
 }
 
-export default function Home({ data }) {
-  const getDistinctGroupNames = () => {
-    const groupNames = new Set();
-    data.forEach((item) => groupNames.add(item['Group Name']));
-    return Array.from(groupNames);
-  };
-
-  const [distinctGroupNames, setDistinctGroupNames] = useState([]);
+export default function GroupDetails({ groupName, data }) {
   const [searchQuery, setSearchQuery] = useState('');
-
-  useEffect(() => {
-    setDistinctGroupNames(getDistinctGroupNames());
-  }, [data]);
-
-  const getCapacitySum = (groupName) => {
-    let sum = 0;
-    data.forEach((item) => {
-      if (item['Group Name'] === groupName) {
-        sum += item['Capacity (MW)'];
-      }
-    });
-    return sum;
-  };
 
   return (
     <div>
-      <h1>Group Names</h1>
+      <h2>Details for Group: {groupName}</h2>
       <input
         type="text"
-        placeholder="Search group names"
+        placeholder="Search company names"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
       <table>
         <thead>
           <tr>
-            <th>Group Name</th>
-            <th>Total Capacity (MW)</th>
+            <th>Company Name</th>
+            <th>Project Name</th>
+            <th>Capacity (MW)</th>
+            <th>Device ID</th>
+            <th>Device Type</th>
+            <th>Registered</th>
+            <th>CoD</th>
           </tr>
         </thead>
         <tbody>
-          {distinctGroupNames
-            .filter((groupName) =>
-              groupName.toLowerCase().includes(searchQuery.toLowerCase())
+          {data
+            .filter((item) => item['Group Name'] === groupName)
+            .filter((item) =>
+              item['Company Name'].toLowerCase().includes(searchQuery.toLowerCase())
             )
-            .map((groupName) => (
-              <tr key={groupName}>
-                <td>
-                  <Link href={`/groupDetails?groupName=${encodeURIComponent(groupName)}`}>
-                    {groupName}
-                  </Link>
-                </td>
-                <td>{getCapacitySum(groupName)}</td>
+            .map((item) => (
+              <tr key={item.id}>
+                <td>{item['Company Name']}</td>
+                <td>{item['Project Name']}</td>
+                <td>{item['Capacity (MW)']}</td>
+                <td>{item['Device ID']}</td>
+                <td>{item['Device Type']}</td>
+                <td>{item['Registered']}</td>
+                <td>{new Date(item['CoD']).toDateString()}</td>
               </tr>
             ))}
         </tbody>

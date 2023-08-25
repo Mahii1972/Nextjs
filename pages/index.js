@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
-import Router from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const HomePage = () => {
   const [message, setMessage] = useState('Redirecting to LoginPage.Please Wait!');
+  const router = useRouter();
 
   useEffect(() => {
     setTimeout(() => {
-      Router.push('/login');
+      router.push('/login');
     }, 1000);
   }, []);
 

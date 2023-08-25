@@ -2,17 +2,23 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import mysql from 'mysql2/promise';
 import { setCookie } from '../../cookieUtils';
+import dotenv from 'dotenv';
 
-const dbConfig = { 
-  host: 'aws.connect.psdb.cloud', 
-  user: 'ngz7zf1fbddebt739x83', 
-  password: 'pscale_pw_xRQ4QhW5uR27qtEQZ0fg3NOZIEar913f0F33GR14j7u', 
-  database: 'temporary', 
-  ssl: { 
-    ca: process.env.PLANETSCALE_CA_CERT, 
-  }, 
-}; 
 
+
+dotenv.config();
+
+const dbUrl = new URL(process.env.DATABASE_URL);
+
+const dbConfig = {
+  host: dbUrl.hostname,
+  user: dbUrl.username,
+  password: dbUrl.password,
+  database: dbUrl.pathname.substring(1),
+  ssl: {
+    ca: process.env.PLANETSCALE_CA_CERT,
+  },
+};
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
 export default async function handler(req, res) {
@@ -27,10 +33,10 @@ export default async function handler(req, res) {
 
     if (rows.length > 0 && bcrypt.compareSync(password, rows[0].password)) {
       const token = jwt.sign({ username, role: rows[0].role }, JWT_SECRET, {
-        expiresIn: '20s',
+        expiresIn: '120s',
       });
       
-      const expiresAt = Math.floor(Date.now() / 1000) + 20; // Current time + 20 seconds
+      const expiresAt = Math.floor(Date.now() / 1000) + 120; // Current time + 20 seconds
       setCookie(res, 'auth', token, { httpOnly: true, path: '/' });
       res.status(200).json({ token, expiresAt });
     } else {

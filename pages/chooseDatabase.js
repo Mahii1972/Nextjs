@@ -28,9 +28,6 @@ const ChooseDatabase = ({ token, role }) => {
     <div>
       <button onClick={handlePlanetScaleClick}>PlanetScale</button>
       <button onClick={handleMongoDBClick}>MongoDB</button>
-      <Link href="/logout">
-        <button>Logout</button>
-      </Link>
     </div>
   );
 };
