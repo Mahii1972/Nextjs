@@ -1,13 +1,20 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        customColor: '#123456',
+      },
+      spacing: {
+        '128': '32rem',
+        '144': '36rem',
+      },
+    },
   },
-  plugins: [],
-}
-
+  plugins: [
+    // Add your plugins here
+  ],
+};
