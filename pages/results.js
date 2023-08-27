@@ -1,11 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const Results = ({ results }) => {
+  const [selectedMonths, setSelectedMonths] = useState(new Map());
+
+  const handleMonthClick = (resultIndex, month) => {
+    const key = `${resultIndex}-${month}`;
+    setSelectedMonths((prev) => new Map(prev).set(key, !prev.get(key)));
+  };
+
+  const handleSubmit = async () => {
+    // Update the database with the selected values
+    const response = await fetch('/api/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ selectedMonths }),
+    });
+    const updatedResults = await response.json();
+    console.log(updatedResults);
+    // Update the results state with the updated values from the database
+  };
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December',
   ];
-
   const visibleMonths = months.filter(month => results.some(result => result[month]));
 
   return (
@@ -33,14 +50,29 @@ const Results = ({ results }) => {
               <td className="border px-4 py-2">{result.Type}</td>
               <td className="border px-4 py-2">{result.CoD}</td>
               <td className="border px-4 py-2">{result.Committed}</td>
-              {visibleMonths.map((month, index) => (
-                <td key={index} className="border px-4 py-2">{result[month]}</td>
+              {visibleMonths.map((month ) => (
+                 <td
+                 key={month}
+                 className={`border px-4 py-2 cursor-pointer ${
+                   selectedMonths.get(`${index}-${month }`) ? 'bg-indigo-200' : ''
+                 }`}
+                 onClick={() => handleMonthClick(index, month)}
+               >
+                 {result[month]}
+               </td>
               ))}
               <td className="border px-4 py-2">{result.Total_Production}</td>
             </tr>
           ))}
         </tbody>
       </table>
+       <button
+        type="button"
+        onClick={handleSubmit}
+        className="inline-flex items-center px-4 py-2 mt-4 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+      >
+        Submit
+      </button>
     </div>
   );
 };
