@@ -24,6 +24,12 @@ const FormComponent = () => {
     });
 
     const results = await response.json();
+    
+  if (!response.ok) {
+    // Show error message and stop execution
+    alert(results.message);
+    return;
+  }
     console.log(results);
     router.push({
         pathname: '/results',

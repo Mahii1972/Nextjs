@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 
 const Results = ({ results }) => {
   const [selectedMonths, setSelectedMonths] = useState(new Map());
+  const router = useRouter();
 
   const handleMonthClick = (resultIndex, month) => {
     const key = `${resultIndex}-${month}`;
@@ -9,16 +11,32 @@ const Results = ({ results }) => {
   };
 
   const handleSubmit = async () => {
-    // Update the database with the selected values
+    const selectedMonthsObject = {};
+    selectedMonths.forEach((value, key) => {
+      const [resultIndex, month] = key.split('-');
+      const deviceId = results[parseInt(resultIndex)]['Device ID'];
+      if (!selectedMonthsObject[deviceId]) {
+        selectedMonthsObject[deviceId] = {};
+      }
+      if (value) {
+        selectedMonthsObject[deviceId][month] = results[parseInt(resultIndex)][month];
+      }
+    });
+
     const response = await fetch('/api/update', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ selectedMonths }),
+      body: JSON.stringify({ selectedMonths: selectedMonthsObject }),
     });
     const updatedResults = await response.json();
     console.log(updatedResults);
-    // Update the results state with the updated values from the database
+
+    if (updatedResults.message === 'Database updated successfully') {
+      alert('Your order placed');
+      router.back();
+    }
   };
+
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December',
