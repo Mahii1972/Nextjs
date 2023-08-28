@@ -25,7 +25,7 @@ export default async function handler(req, res) {
   WHERE \`Year\` >= ? AND \`Type\` = ? AND \`CoD\` >= ?
   HAVING Total_Production >= 0
   ORDER BY Total_Production DESC
-`, [CoDYear, type, `${CoDYear}-12-31`, requirement]);
+`, [CoDYear, type, `${CoDYear}-12-31`]);
 
       res.status(200).json(rows);
     } catch (error) {

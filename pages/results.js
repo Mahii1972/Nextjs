@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 const Results = ({ results }) => {
@@ -6,34 +6,73 @@ const Results = ({ results }) => {
   const router = useRouter();
   const requirement = router.query.requirement;
   const [remainingRequirement, setRemainingRequirement] = useState(parseInt(requirement));
-
-
-
-  const handleMonthClick = (resultIndex, month) => {
-    const key = `${resultIndex}-${month}`;
-    const currentValue = selectedMonths.get(key);
-    let monthValue = parseInt(results[resultIndex][month]);
-
-    // If the requirement has already reached zero, block further selections
-    if (!currentValue && remainingRequirement == 0) return;
-
-    // If unselecting a month, add the value back to the requirement
-    if(currentValue){
-      setRemainingRequirement(prev => prev + monthValue);
-    } else {
-      // If the remaining requirement will be exceeded by the selected month, adjust the value to fit the remaining requirement
-      if (remainingRequirement - monthValue < 0) {
-        // Adjust device month value
-        results[resultIndex][month] = remainingRequirement;
-        // set remaining requirement to zero as, because you have reached your requirement
-        setRemainingRequirement(0); 
-      } else {
-        setRemainingRequirement(prev => prev - monthValue);
+  const suggestMonths = () => {
+    let suggestion = new Map(selectedMonths);
+    let remaining = parseInt(requirement);
+  
+    // Now it processes all devices sorted by production
+    let sorted = [...results].sort((a, b) => b.Total_Production - a.Total_Production);
+  
+    for (let i = 0; i < sorted.length && remaining > 0; i++) {
+      const result = sorted[i];
+      for (const month of visibleMonths) {
+        if (remaining <= 0) break;
+  
+        let monthValue = parseInt(result[month]); 
+        let adjustedMonthValue = Math.min(monthValue, remaining);
+  
+        suggestion.set(`${i}-${month}`, true);
+        result[month] = adjustedMonthValue;
+        remaining -= adjustedMonthValue;
       }
     }
+  
+    setSelectedMonths(suggestion);
+    setRemainingRequirement(remaining);
+  };
+  
+  const removeSuggestion = () => {
+    selectedMonths.forEach((isSelected, key) => {
+      if (isSelected) {
+        const [resultIndex, month] = key.split("-");
+        results[resultIndex][month] = originalResults[resultIndex][month];
+      }
+    });
+    setSelectedMonths(new Map());
+    setRemainingRequirement(parseInt(requirement));
+  };
 
-    // Toggle the month selection state
-    setSelectedMonths((prev) => new Map(prev).set(key, !prev.get(key)));
+
+  const [originalResults, setOriginalResults] = React.useState(null);
+useEffect(() => {
+  setOriginalResults(JSON.parse(JSON.stringify(results)));
+}, []);
+
+const handleMonthClick = (resultIndex, month) => {
+  const key = `${resultIndex}-${month}`;
+  const currentValue = selectedMonths.get(key);
+  let monthValue = parseInt(results[resultIndex][month]);
+  let originalMonthValue = originalResults[resultIndex][month];
+
+  // If unselecting a month
+  if(currentValue){
+    setRemainingRequirement(prev => prev + monthValue);
+    // reset the value to original
+    results[resultIndex][month] = originalMonthValue; 
+  } else {
+    // already reached the requirement
+    if (remainingRequirement == 0) return;
+
+    // If the remaining requirement will be exceeded by the selected month
+    if (remainingRequirement - originalMonthValue < 0) {
+      results[resultIndex][month] = remainingRequirement;
+      setRemainingRequirement(0);
+    } else {
+      setRemainingRequirement(prev => prev - monthValue);
+    }
+  }
+  // Toggle the month selection state
+  setSelectedMonths((prev) => new Map(prev).set(key, !prev.get(key)));
 };
 
   const handleSubmit = async () => {
@@ -75,11 +114,37 @@ const Results = ({ results }) => {
     'July', 'August', 'September', 'October', 'November', 'December',
   ];
   const visibleMonths = months.filter(month => results.some(result => result[month]));
+  useEffect(() => {
+    suggestMonths();
+}, []);
 
   return (
     <div className="container mx-auto px-4">
       <h1 className="text-2xl font-bold mb-4">Search Results</h1>
       <p>Requirement: {remainingRequirement}</p>
+      <div><button
+        type="button"
+        onClick={suggestMonths}
+        className="inline-flex items-center px-4 py-2 mr-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+      >
+        Apply Suggestions
+      </button>
+      <button
+        type="button"
+        onClick={removeSuggestion}
+        className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+      >
+        Remove Suggestions
+      </button>
+    </div>
+    <div className="flex justify-end">
+      <button
+        type="button"
+        onClick={handleSubmit}
+        className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+      >
+        Submit
+      </button></div>
       <table className="w-full table-auto border-collapse">
         <thead>
           <tr className="bg-gray-200 text-gray-700">
@@ -118,13 +183,6 @@ const Results = ({ results }) => {
           ))}
         </tbody>
       </table>
-       <button
-        type="button"
-        onClick={handleSubmit}
-        className="inline-flex items-center px-4 py-2 mt-4 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-      >
-        Submit
-      </button>
     </div>
   );
 };
