@@ -30,11 +30,11 @@ const FormComponent = () => {
     alert(results.message);
     return;
   }
-    console.log(results);
-    router.push({
-        pathname: '/results',
-        query: { results: JSON.stringify(results) },
-      });
+  router.push({
+    pathname: '/results',
+    query: { results: JSON.stringify(results), requirement: requirement },
+  });
+  
   
 };
 

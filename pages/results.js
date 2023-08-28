@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 const Results = ({ results }) => {
   const [selectedMonths, setSelectedMonths] = useState(new Map());
   const router = useRouter();
+  const requirement = router.query.requirement;
+
 
   const handleMonthClick = (resultIndex, month) => {
     const key = `${resultIndex}-${month}`;
@@ -11,18 +13,24 @@ const Results = ({ results }) => {
   };
 
   const handleSubmit = async () => {
+    let remainingRequirement = parseInt(requirement);
     const selectedMonthsObject = {};
+  
     selectedMonths.forEach((value, key) => {
-      const [resultIndex, month] = key.split('-');
-      const deviceId = results[parseInt(resultIndex)]['Device ID'];
-      if (!selectedMonthsObject[deviceId]) {
-        selectedMonthsObject[deviceId] = {};
-      }
-      if (value) {
-        selectedMonthsObject[deviceId][month] = results[parseInt(resultIndex)][month];
+      if (value && remainingRequirement > 0) {
+        const [resultIndex, month] = key.split('-');
+        const deviceId = results[parseInt(resultIndex)]['Device ID'];
+        if (!selectedMonthsObject[deviceId]) {
+          selectedMonthsObject[deviceId] = {};
+        }
+  
+        const monthValue = results[parseInt(resultIndex)][month];
+        const adjustedMonthValue = Math.min(remainingRequirement, monthValue);
+        selectedMonthsObject[deviceId][month] = adjustedMonthValue;
+        remainingRequirement -= adjustedMonthValue;
       }
     });
-
+  
     const response = await fetch('/api/update', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -30,12 +38,13 @@ const Results = ({ results }) => {
     });
     const updatedResults = await response.json();
     console.log(updatedResults);
-
+  
     if (updatedResults.message === 'Database updated successfully') {
       alert('Your order placed');
       router.back();
     }
   };
+  
 
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -46,6 +55,7 @@ const Results = ({ results }) => {
   return (
     <div className="container mx-auto px-4">
       <h1 className="text-2xl font-bold mb-4">Search Results</h1>
+      <p>Requirement: {requirement}</p>
       <table className="w-full table-auto border-collapse">
         <thead>
           <tr className="bg-gray-200 text-gray-700">
