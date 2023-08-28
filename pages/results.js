@@ -5,12 +5,36 @@ const Results = ({ results }) => {
   const [selectedMonths, setSelectedMonths] = useState(new Map());
   const router = useRouter();
   const requirement = router.query.requirement;
+  const [remainingRequirement, setRemainingRequirement] = useState(parseInt(requirement));
+
 
 
   const handleMonthClick = (resultIndex, month) => {
     const key = `${resultIndex}-${month}`;
+    const currentValue = selectedMonths.get(key);
+    let monthValue = parseInt(results[resultIndex][month]);
+
+    // If the requirement has already reached zero, block further selections
+    if (!currentValue && remainingRequirement == 0) return;
+
+    // If unselecting a month, add the value back to the requirement
+    if(currentValue){
+      setRemainingRequirement(prev => prev + monthValue);
+    } else {
+      // If the remaining requirement will be exceeded by the selected month, adjust the value to fit the remaining requirement
+      if (remainingRequirement - monthValue < 0) {
+        // Adjust device month value
+        results[resultIndex][month] = remainingRequirement;
+        // set remaining requirement to zero as, because you have reached your requirement
+        setRemainingRequirement(0); 
+      } else {
+        setRemainingRequirement(prev => prev - monthValue);
+      }
+    }
+
+    // Toggle the month selection state
     setSelectedMonths((prev) => new Map(prev).set(key, !prev.get(key)));
-  };
+};
 
   const handleSubmit = async () => {
     let remainingRequirement = parseInt(requirement);
@@ -55,7 +79,7 @@ const Results = ({ results }) => {
   return (
     <div className="container mx-auto px-4">
       <h1 className="text-2xl font-bold mb-4">Search Results</h1>
-      <p>Requirement: {requirement}</p>
+      <p>Requirement: {remainingRequirement}</p>
       <table className="w-full table-auto border-collapse">
         <thead>
           <tr className="bg-gray-200 text-gray-700">

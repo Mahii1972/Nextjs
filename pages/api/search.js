@@ -23,9 +23,8 @@ export default async function handler(req, res) {
   SELECT \`Device ID\`, \`Year\`, \`Type\`, \`CoD\`, \`Committed\`, ${selectedMonths.join(', ')}, (${sumSelectedMonths}) as Total_Production
   FROM tab
   WHERE \`Year\` >= ? AND \`Type\` = ? AND \`CoD\` >= ?
-  HAVING Total_Production >= ?
+  HAVING Total_Production >= 0
   ORDER BY Total_Production DESC
-  LIMIT 3
 `, [CoDYear, type, `${CoDYear}-12-31`, requirement]);
 
       res.status(200).json(rows);
