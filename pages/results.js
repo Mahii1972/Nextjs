@@ -7,41 +7,54 @@ const Results = ({ results }) => {
   const requirement = router.query.requirement;
   const [remainingRequirement, setRemainingRequirement] = useState(parseInt(requirement));
   const suggestMonths = () => {
-    let suggestion = new Map(selectedMonths);
-    let remaining = parseInt(requirement);
+    console.log("Starting Suggestion");
+    removeSuggestion(() => {
+      let suggestion = new Map();
+      let remaining = parseInt(requirement);
   
-    // Now it processes all devices sorted by production
-    let sorted = [...results].sort((a, b) => b.Total_Production - a.Total_Production);
+      // Now it processes all devices sorted by production
+      let sorted = [...results].sort((a, b) => b.Total_Production - a.Total_Production);
   
-    for (let i = 0; i < sorted.length && remaining > 0; i++) {
-      const result = sorted[i];
-      for (const month of visibleMonths) {
-        if (remaining <= 0) break;
+      outerLoop:
+      for (let i = 0; i < sorted.length && remaining > 0; i++) {
+          const result = sorted[i];
+          for (const month of visibleMonths) {
+              if (remaining <= 0) break outerLoop;
   
-        let monthValue = parseInt(result[month]); 
-        let adjustedMonthValue = Math.min(monthValue, remaining);
+              let monthValue = parseInt(result[month]); 
+              let adjustedMonthValue = Math.min(monthValue, remaining);
   
-        suggestion.set(`${i}-${month}`, true);
-        result[month] = adjustedMonthValue;
-        remaining -= adjustedMonthValue;
+              suggestion.set(`${i}-${month}`, true);
+              result[month] = adjustedMonthValue;
+              remaining -= adjustedMonthValue;
+          }
       }
-    }
   
-    setSelectedMonths(suggestion);
-    setRemainingRequirement(remaining);
+      setSelectedMonths(suggestion);
+      setRemainingRequirement(remaining);
+      console.log("Finished Suggestion");
+    });
   };
   
-  const removeSuggestion = () => {
-    selectedMonths.forEach((isSelected, key) => {
-      if (isSelected) {
-        const [resultIndex, month] = key.split("-");
-        results[resultIndex][month] = originalResults[resultIndex][month];
+  const removeSuggestion = (callback) => {
+    setSelectedMonths(prev => {
+      const map = new Map();
+  
+      for (const [key, value] of prev) {
+          if (!value) continue;
+          const [resultIndex, month] = key.split("-");
+  
+          //reset results here
+          results[resultIndex][month] = originalResults[resultIndex][month];
       }
+  
+      if (typeof callback === 'function') { 
+        callback();
+      }
+      return map;
     });
-    setSelectedMonths(new Map());
     setRemainingRequirement(parseInt(requirement));
   };
-
 
   const [originalResults, setOriginalResults] = React.useState(null);
 useEffect(() => {
