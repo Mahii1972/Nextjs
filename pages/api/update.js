@@ -17,9 +17,12 @@ export default async function handler(req, res) {
           // Update the database
           await connection.query(`
   UPDATE tab
-  SET \`${month}\` = GREATEST(\`${month}\` - ?, 0), \`Committed\` = \`Committed\` + ?
+  SET
+    \`${month}\` = GREATEST(\`${month}\` - ?, 0),
+    \`Committed\` = \`Committed\` + ?,
+    \`${month}_Commited\` = \`${month}_Commited\` + ?
   WHERE \`Device ID\` = ?
-`, [value, value, deviceId]);
+`, [value, value, value, deviceId]);
 
 
         }
