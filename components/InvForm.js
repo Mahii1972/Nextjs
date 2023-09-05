@@ -1,5 +1,11 @@
 import axios from 'axios';
 import { useState } from 'react';
+import {
+  Card,
+  Input,
+  Button,
+  Typography,
+} from '@material-tailwind/react';
 
 const InsertDataForm = () => {
   const [data, setData] = useState({
@@ -33,19 +39,25 @@ const InsertDataForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" onChange={handleChange} name="groupName" placeholder="Group Name" required /><br/>
-      <input type="text" onChange={handleChange} name="companyName" placeholder="Company Name" required /><br/>
-      <input type="text" onChange={handleChange} name="projectName" placeholder="Project Name" required /><br/>
-      <input type="number" onChange={handleChange} name="capacityMW" placeholder="Capacity (MW)" required /><br/>
-      <input type="text" onChange={handleChange} name="deviceId" placeholder="Device ID" required /><br/>
-      <input type="text" onChange={handleChange} name="deviceType" placeholder="Device Type" required /><br/>
-      <input type="text" onChange={handleChange} name="registered" placeholder="Registered" required /><br/>
-      <input type="date" onChange={handleChange} name="cod" placeholder="CoD" required /><br/>
-
-      <button type="submit">Submit</button>
-    </form>
-  )
+    <Card color="transparent" shadow={false}>
+      <Typography variant="h4" color="blue-gray">
+        Enter Details
+      </Typography>
+      <form onSubmit={handleSubmit} className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96 flex flex-col gap-6">
+        <Input size="lg" label="Group Name" name="groupName" onChange={handleChange} required />
+        <Input size="lg" label="Company Name" name="companyName" onChange={handleChange} required />
+        <Input size="lg" label="Project Name" name="projectName" onChange={handleChange} required />
+        <Input size="lg" label="Capacity (MW)" type="number" name="capacityMW" onChange={handleChange} required />
+        <Input size="lg" label="Device ID" name="deviceId" onChange={handleChange} required />
+        <Input size="lg" label="Device Type" name="deviceType" onChange={handleChange} required />
+        <Input size="lg" label="Registered" name="registered" onChange={handleChange} required />
+        <Input size="lg" label="CoD" type="date" name="cod" onChange={handleChange} required />
+        <Button className="mt-6" fullWidth type="submit">
+          Submit
+        </Button>
+      </form>
+    </Card>
+  );
 }
 
 export default InsertDataForm;

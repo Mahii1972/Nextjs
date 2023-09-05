@@ -3,7 +3,15 @@ import { useState, useEffect } from 'react';
 import Router from 'next/router';
 import Cookies from 'js-cookie';
 import jwt from 'jsonwebtoken';
-
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Typography,
+  Input,
+  Button,
+} from '@material-tailwind/react';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -45,21 +53,39 @@ const LoginPage = () => {
     <div className="loader"></div>
   ) : (
     <form onSubmit={handleSubmit}>
-      <input
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        type="text"
-        name="username"
-        required
-      />
-      <input
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        type="password"
-        name="password"
-        required
-      />
-      <button type="submit">Login</button>
+      <Card className="w-96">
+        <CardHeader
+          variant="gradient"
+          color="gray"
+          className="mb-4 grid h-28 place-items-center"
+        >
+          <Typography variant="h3" color="white">
+            Sign In
+          </Typography>
+        </CardHeader>
+        <CardBody className="flex flex-col gap-4">
+          <Input
+            label="Username"
+            size="lg"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          <Input
+            label="Password"
+            size="lg"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </CardBody>
+        <CardFooter className="pt-0">
+          <Button variant="gradient" fullWidth type="submit">
+            Sign In
+          </Button>
+        </CardFooter>
+      </Card>
     </form>
   );
 };

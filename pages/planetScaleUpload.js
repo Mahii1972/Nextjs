@@ -3,6 +3,8 @@ import Router from 'next/router';
 import { getCookie } from '../cookieUtils';
 import Link from 'next/link';
 import jwt from 'jsonwebtoken';
+import { Button } from '@material-tailwind/react';
+
 
 export default function Upload({ token }) {
 
@@ -35,13 +37,24 @@ export default function Upload({ token }) {
   return (
     <form onSubmit={onFormSubmit}>
       <input type="file" onChange={(e) => setFile(e.target.files[0])} />
-      <button type="submit">Upload</button>
+      <Button
+        variant="gradient"
+        className="rounded-full"
+        type="submit"
+      >
+        Upload
+      </Button>
       <Link href="/logout">
-        <button>Logout</button>
+        <Button
+          variant="gradient"
+          className="rounded-full"
+        >
+          Logout
+        </Button>
       </Link>
     </form>
   );
-}
+};
 
 export async function getServerSideProps(context) {
   const token = getCookie(context.req, 'auth');

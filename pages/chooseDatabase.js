@@ -3,6 +3,8 @@ import Router from 'next/router';
 import { getCookie } from '../cookieUtils';
 import jwt from 'jsonwebtoken';
 import Link from 'next/link';
+import { Button } from '@material-tailwind/react';
+
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
@@ -25,9 +27,21 @@ const ChooseDatabase = ({ token, role }) => {
   };
 
   return (
-    <div>
-      <button onClick={handlePlanetScaleClick}>PlanetScale</button>
-      <button onClick={handleMongoDBClick}>MongoDB</button>
+    <div className="flex items-center gap-4">
+      <Button
+        variant="gradient"
+        className="rounded-full"
+        onClick={handlePlanetScaleClick}
+      >
+        PlanetScale
+      </Button>
+      <Button
+        variant="gradient"
+        className="rounded-full"
+        onClick={handleMongoDBClick}
+      >
+        MongoDB
+      </Button>
     </div>
   );
 };

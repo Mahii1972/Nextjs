@@ -1,52 +1,43 @@
-import React from 'react';
-import Link from 'next/link';
+import React from "react";
+import Link from "next/link";
+import {
+  Card,
+  Typography,
+  List,
+  ListItem,
+} from "@material-tailwind/react";
 
-const Sidebar = ({ children }) => {
+function Sidebar({ children }) {
   return (
-    <div className="container">
-      <div className="sidebar">
-        <div className="menu-items">
-          <Link href="/">Homepage</Link>
-          <Link href="/chooseDatabase">Uploads</Link>
-          <Link href="/new">See Graph</Link>
-          <Link href="/pst">Table</Link>
-          <Link href="/form">Data registeration Form</Link>
-          <Link href="/logout">Log out 
-       </Link>
-        </div>
-      </div>
-      <main className="main-content">{children}</main>
-      <style jsx>{`
-        .container {
-          display: flex;
-        }
-        .sidebar {
-          flex: 0 0 20%;
-          height: 100vh;
-          padding: 20px;
-          background-color: #f5f5f5;
-          border-right: 1px solid #ddd;
-        }
-        .menu-items {
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-        }
-        .menu-items a {
-          text-decoration: none;
-          color: #333;
-        }
-        .menu-items a:hover {
-          color: #0070f3;
-          cursor: pointer;
-        }
-        .main-content {
-          flex: 1;
-          padding: 20px;
-        }
-      `}</style>
+    <div className="flex min-h-screen">
+      <Card className="text-center w-56 p-6">
+        <Typography variant="h5" color="gray">Menu</Typography>
+        <List>
+          <ListItem color="lightBlue">
+            <Link href="/">Homepage</Link>
+          </ListItem>
+          <ListItem color="lightBlue">
+            <Link href="/chooseDatabase">Uploads</Link>
+          </ListItem>
+          <ListItem color="lightBlue">
+            <Link href="/full">See Graph</Link>
+          </ListItem>
+          <ListItem color="lightBlue">
+            <Link href="/pst">Table</Link>
+          </ListItem>
+          <ListItem color="lightBlue">
+            <Link href="/form">Data registration Form</Link>
+          </ListItem>
+          <ListItem color="lightBlue">
+            <Link href="/logout">Log out</Link>
+          </ListItem>
+        </List>
+      </Card>
+      <main className="main-content flex-grow bg-gray-100 pt-10 pb-5 pl-20 pr-5">
+        {children}
+      </main>
     </div>
   );
-};
+}
 
 export default Sidebar;

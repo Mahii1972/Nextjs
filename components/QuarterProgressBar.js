@@ -56,7 +56,7 @@ const QuarterProgress = () => {
       <ResponsiveContainer width="100%" height={100}>
         <BarChart layout="vertical" data={barData}>
           <XAxis type="number" domain={[0, 100]} />
-          <YAxis type="category" dataKey="type" />
+          <YAxis type="category" dataKey="type" tickMargin={10} width={100} />
           <Tooltip formatter={(value) => `${value.toFixed(2)}%`} />
           <Bar dataKey={(data) => data.type === 'Committed' ? data.value : null } fill="#8884d8" />
           <Bar dataKey={(data) => data.type === 'predicted' ? data.value : null } fill="#82ca9d" />

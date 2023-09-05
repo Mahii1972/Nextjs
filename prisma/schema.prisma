@@ -60,3 +60,60 @@ model Inv {
   Registered  String?
   CoD         DateTime?
 }
+
+model Tab {
+  id                Int      @id @default(autoincrement())
+  deviceId          String?  @map("Device ID")
+  year              Int?
+  type              String?
+  cod               DateTime? @map("CoD")
+  committed         Int?
+  january           Int?
+  januaryActual     Int?      @map("January_Actual")
+  januaryIssued     Int?      @map("January_Issued")
+  february          Int?
+  februaryActual    Int?      @map("February_Actual")
+  februaryIssued    Int?      @map("February_Issued")
+  march             Int?
+  marchActual       Int?      @map("March_Actual")
+  marchIssued       Int?      @map("March_Issued")
+  april             Int?
+  aprilActual       Int?      @map("April_Actual")
+  aprilIssued       Int?      @map("April_Issued")
+  may               Int?
+  mayActual         Int?      @map("May_Actual")
+  mayIssued         Int?      @map("May_Issued")
+  june              Int?
+  juneActual        Int?      @map("June_Actual")
+  juneIssued        Int?      @map("June_Issued")
+  july              Int?
+  julyActual        Int?      @map("July_Actual")
+  julyIssued        Int?      @map("July_Issued")
+  august            Int?
+  augustActual      Int?      @map("August_Actual")
+  augustIssued      Int?      @map("August_Issued")
+  september         Int?
+  septemberActual   Int?      @map("September_Actual")
+  septemberIssued   Int?      @map("September_Issued")
+  october           Int?
+  octoberActual     Int?      @map("October_Actual")
+  octoberIssued     Int?      @map("October_Issued")
+  november          Int?
+  novemberActual    Int?      @map("November_Actual")
+  novemberIssued    Int?      @map("November_Issued")
+  december          Int?
+  decemberActual    Int?      @map("December_Actual")
+  decemberIssued    Int?      @map("December_Issued")
+  januaryCommited   Int?      @default(0) @map("January_Commited")
+  februaryCommited  Int?      @default(0) @map("February_Commited")
+  marchCommited     Int?      @default(0) @map("March_Commited")
+  aprilCommited     Int?      @default(0) @map("April_Commited")
+  mayCommited       Int?      @default(0) @map("May_Commited")
+  juneCommited      Int?      @default(0) @map("June_Commited")
+  julyCommited      Int?      @default(0) @map("July_Commited")
+  augustCommited    Int?      @default(0) @map("August_Commited")
+  septemberCommited Int?      @default(0) @map("September_Commited")
+  octoberCommited   Int?      @default(0) @map("October_Commited")
+  novemberCommited  Int?      @default(0) @map("November_Commited")
+  decemberCommited  Int?      @default(0) @map("December_Commited")
+}
