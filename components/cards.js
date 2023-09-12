@@ -83,7 +83,7 @@ export function CardDevices() {
         </Typography>
       </CardBody>
       <CardFooter className="pt-0">
-  <Link href="/tab">   
+  <Link href="/table">   
       <Button>Click to Commit</Button>
   </Link>
 </CardFooter>

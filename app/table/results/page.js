@@ -1,13 +1,13 @@
 "use client"
-import React, { useState , useEffect } from 'react';
+import React, { useState , useEffect , useContext } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import ResultsContext from '../../SearchContext/store';
 
 
 const Results = () => {
+  const { results, requirement } = useContext(ResultsContext);
   const [selectedMonths, setSelectedMonths] = useState(new Map());
   const router = useRouter();
-  const results = router.query.results;
-  const requirement = router.query.requirement;
   const [remainingRequirement, setRemainingRequirement] = useState(parseInt(requirement));
   const suggestMonths = () => {
     console.log("Starting Suggestion");
@@ -113,7 +113,7 @@ const handleMonthClick = (resultIndex, month) => {
     const response = await fetch('/api/update', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ selectedMonths: selectedMonthsObject }),
+      body: JSON.stringify(selectedMonthsObject),
     });
     const updatedResults = await response.json();
     console.log(updatedResults);

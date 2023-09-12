@@ -6,6 +6,7 @@ import CircularProgressBar from '@/components/ProgressBar';
 import QuarterProgress from '@/components/QuarterProgressBar';
 import { Tabs, TabsHeader, TabsBody, Tab, TabPanel } from "@material-tailwind/react";
 import { CardCommitted, CardIssued, CardDevices } from '@/components/cards';
+import Search from '@/components/search';
 
 
 
@@ -35,11 +36,11 @@ export default function Home() {
 
   return (
     <div className="p-8 bg-white">
-        <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
-        <CardCommitted />
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <CardCommitted />
       <CardIssued />
       <CardDevices />
-      </div>
+    </div>
         <Tabs color="teal" variant="rounded" defaultValue='kwh'>
             <TabsHeader>
                 {tabsData.map(({ value, label }) => (
@@ -54,6 +55,7 @@ export default function Home() {
                 ))}
             </TabsBody>
         </Tabs>
+        <Search />
     </div>
   );
 };

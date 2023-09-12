@@ -1,16 +1,19 @@
 "use client"
-import React, { useState } from "react";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import React, { useState, useContext } from 'react';
+import { useRouter } from 'next/navigation';
+import ResultsContext from './../SearchContext/store';
+
 
 const FormComponent = () => {
-  const [requirement, setRequirement] = useState("");
+  const { setResults, setRequirement } = useContext(ResultsContext);
+  const [requirement,_setRequirement] = useState("");
   const [CoDYear, setCoDYear] = useState("");
   const [productionPeriodFrom, setProductionPeriodFrom] = useState("");
   const [productionPeriodTo, setProductionPeriodTo] = useState("");
   const [type, setType] = useState("");
   const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+  
+  
 
   const handleSearch = async () => {
     // Perform search functionality here
@@ -33,10 +36,9 @@ const FormComponent = () => {
     alert(results.message);
     return;
   }
-  router.push({
-    pathname: '/table/results',
-    searchParams: { results: JSON.stringify(results), requirement: requirement },
-  });
+  setResults(results);
+  setRequirement(requirement);
+  router.push('/table/results');
   
   
 };
@@ -69,7 +71,7 @@ const FormComponent = () => {
           type="number"
           id="requirement"
           value={requirement}
-          onChange={(e) => setRequirement(e.target.value)}
+          onChange={(e) => _setRequirement(e.target.value)}
           className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         />
       </div>

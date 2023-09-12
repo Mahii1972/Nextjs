@@ -13,6 +13,7 @@ export async function POST(request) {
       for (const month in deviceMonths) {
         const value = deviceMonths[month];
         // Update the database
+        
         await connection.query(`
           UPDATE tab
           SET

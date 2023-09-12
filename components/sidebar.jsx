@@ -12,25 +12,21 @@ function Sidebar({ children }) {
   return (
     <div className="flex min-h-screen">
       <Card className="text-center w-56 p-6">
-        <Typography variant="h5" color="gray">Menu</Typography>
+      <Link href="/">
+          <Typography variant="h5" color="gray" className="cursor-pointer">A Next.js App</Typography>
+        </Link>
         <List>
-          <ListItem color="lightBlue">
-            <Link href="/">Homepage</Link>
+        <ListItem color="lightBlue">
+            <Link href="/Dashboard">Dashboard</Link>
           </ListItem>
           <ListItem color="lightBlue">
-            <Link href="/database">Uploads</Link>
+            <Link href="/database">file Upload</Link>
           </ListItem>
           <ListItem color="lightBlue">
-            <Link href="/graph">See Graph</Link>
+            <Link href="/table">Commit</Link>
           </ListItem>
           <ListItem color="lightBlue">
-            <Link href="/pst">Table</Link>
-          </ListItem>
-          <ListItem color="lightBlue">
-            <Link href="/database/form">Data registration Form</Link>
-          </ListItem>
-          <ListItem color="lightBlue">
-            <Link href="/logout">Log out</Link>
+            <Link href="/database/form">Data Entry Form</Link>
           </ListItem>
         </List>
       </Card>
