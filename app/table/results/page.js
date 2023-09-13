@@ -5,7 +5,7 @@ import ResultsContext from '../../SearchContext/store';
 
 
 const Results = () => {
-  const { results, requirement } = useContext(ResultsContext);
+  const { results, requirement ,organisation } = useContext(ResultsContext);
   const [selectedMonths, setSelectedMonths] = useState(new Map());
   const router = useRouter();
   const [remainingRequirement, setRemainingRequirement] = useState(parseInt(requirement));
@@ -120,6 +120,12 @@ const handleMonthClick = (resultIndex, month) => {
   
     if (updatedResults.message === 'Database updated successfully') {
       alert('Your order placed');
+
+      const response = await fetch('/api/buyer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ organisation, selectedMonths: selectedMonthsObject }),
+      });
       router.back();
     }
   };

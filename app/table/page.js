@@ -5,12 +5,13 @@ import ResultsContext from './../SearchContext/store';
 
 
 const FormComponent = () => {
-  const { setResults, setRequirement } = useContext(ResultsContext);
-  const [requirement,_setRequirement] = useState("");
+  const { setResults, setRequirement, setOrganisation } = useContext(ResultsContext);
+    const [requirement,_setRequirement] = useState("");
   const [CoDYear, setCoDYear] = useState("");
   const [productionPeriodFrom, setProductionPeriodFrom] = useState("");
   const [productionPeriodTo, setProductionPeriodTo] = useState("");
   const [type, setType] = useState("");
+  const [organisation, _setOrganisation] = useState("");
   const router = useRouter();
   
   
@@ -38,6 +39,7 @@ const FormComponent = () => {
   }
   setResults(results);
   setRequirement(requirement);
+  setOrganisation(organisation);
   router.push('/table/results');
   
   
@@ -63,6 +65,18 @@ const FormComponent = () => {
   ];
   return (
     <div className="space-y-4">
+      <div>
+        <label htmlFor="organisation" className="block text-sm font-medium">
+          Enter your organisation name
+        </label>
+        <input
+          type="text"
+          id="organisation"
+          value={organisation}
+          onChange={(e) => _setOrganisation(e.target.value)}
+          className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        />
+      </div>
       <div>
         <label htmlFor="requirement" className="block text-sm font-medium">
           Requirement (kWh)
