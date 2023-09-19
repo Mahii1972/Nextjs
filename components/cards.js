@@ -52,7 +52,7 @@ export function CardIssued() {
         <Typography variant="h5" color="blue-gray" className="mb-2">
         {data.issued_percentage.toFixed(2)}% Issued
         </Typography>
-        <Typography> of total Predcted (Kwh) </Typography>
+        <Typography> of Actual Production (Kwh) </Typography>
       </CardBody>
       <CardFooter className="pt-0">
       <Typography>2023</Typography>

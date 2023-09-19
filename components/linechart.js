@@ -37,7 +37,7 @@ export default function KwhLineChart() {
     >
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey="month" />
-      <YAxis domain={[3350000, 3600000]} />
+      <YAxis domain={[0, 1918369]} />
       <Tooltip />
       <Legend />
       <Line type="monotone" dataKey="Predicted" stroke="#8884d8" activeDot={{ r: 8 }} />

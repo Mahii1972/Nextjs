@@ -1,17 +1,20 @@
 "use client"
-import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { Button } from '@material-tailwind/react';
 
 const ChooseDatabase = () => {
   const Router = useRouter()
+
   const handlePlanetScaleClick = () => {
     Router.push('/database/planetscale');
   };
 
   const handleMongoDBClick = () => {
     Router.push('/mongoDBUpload');
+  };
+
+  const handleSyncClick = () => {
+    fetch('/api/sync', {method: 'POST'});
   };
 
   return (
@@ -29,6 +32,13 @@ const ChooseDatabase = () => {
         onClick={handleMongoDBClick}
       >
         MongoDB
+      </Button>
+      <Button
+        variant="gradient"
+        className="rounded-full"
+        onClick={handleSyncClick}
+      >
+        Sync
       </Button>
     </div>
   );

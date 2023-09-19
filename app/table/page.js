@@ -31,6 +31,7 @@ const FormComponent = () => {
     });
 
     const results = await response.json();
+    console.log(results);
     
   if (!response.ok) {
     // Show error message and stop execution

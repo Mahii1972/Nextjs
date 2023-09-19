@@ -3,12 +3,12 @@ import getPSConnection from '@/lib/planetscaledb';
 async function fetchData() {
   const conn = await getPSConnection();
   const [rows] = await conn.query(`
-    SELECT
-      SUM(Committed) as Total_Committed,
-      SUM(January + February + March + April + May + June + July + August + September + October + November + December) as Total_Actual
-    FROM tab
+  SELECT
+  SUM(Estimated_used) as Total_Committed,
+  SUM(Estimated) as Total_Actual
+FROM \`table\`
   `);
-  await conn.end();
+  await conn.end(); 
   return rows[0];
 }
 
